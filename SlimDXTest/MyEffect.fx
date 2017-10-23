@@ -2,12 +2,15 @@
 matrix View;
 matrix Projection;
 Texture2D normalTexture;
+float4 matColor;
 
 SamplerState mySampler
 {
+    AddressU = WRAP;
+    AddressV = WRAP;
 };
 
-bool tex;
+bool tex, mat;
 
 struct Vertexes
 {
@@ -32,6 +35,10 @@ float4 myPixelShader(Vertexes input) : SV_Target
     if (tex)
     {
         return normalTexture.Sample(mySampler, input.uv);
+    }
+    else if (mat)
+    {
+        return matColor;
     }
     else
     {

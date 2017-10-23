@@ -226,7 +226,8 @@ namespace SlimDXTest
             {
                 string[] str = s.ReadLine().Split('{');
                 str = str[1].Split('}');
-                materialReferens[i] = str[0];
+                Console.WriteLine("Converter: MaterialReference.Add:" + str[0].Trim());
+                materialReferens[i] = str[0].Trim();
             }
 
             string buf = s.ReadLine();

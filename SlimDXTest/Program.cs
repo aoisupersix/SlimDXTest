@@ -14,8 +14,6 @@ namespace SlimDXTest
             {
                 view.Run();
             }
-            //XLoader xloader = new XLoader();
-            //xloader.LoadFile("./Teimoku.x");
         }
     }
 }

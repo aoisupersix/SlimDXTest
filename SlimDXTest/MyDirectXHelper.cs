@@ -58,9 +58,27 @@ namespace SlimDXTest
                     );
             }
         }
+
+        public static Buffer CreateIndexBuffer(SlimDX.Direct3D11.Device graphicsDevice, uint[] indices)
+        {
+            using (SlimDX.DataStream indicesStream = new SlimDX.DataStream(indices, true, true))
+            {
+                return new Buffer(
+                    graphicsDevice,
+                    indicesStream,
+                    new BufferDescription
+                    {
+                        SizeInBytes = (int)indicesStream.Length,
+                        BindFlags = BindFlags.IndexBuffer,
+                        StructureByteStride = sizeof(uint)
+                    }
+                    );
+            }
+        }
+
         public static VertexPositionTexture CreateVertexPositionTexture(Vector3 pos, Vector2 texCoord)
         {
-            float scale = 0.3f;
+            float scale = 0.5f;
             float x = pos.X, y = pos.Y, z = pos.Z;
             VertexPositionTexture vtx = new VertexPositionTexture
             {

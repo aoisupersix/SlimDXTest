@@ -93,6 +93,7 @@ namespace SlimDXTest
         {
             UnloadContent();
             RenderTarget.Dispose();
+            GraphicsDevice.ImmediateContext.Rasterizer.State.Dispose();
             GraphicsDevice.Dispose();
             SwapChain.Dispose();
         }
@@ -100,5 +101,18 @@ namespace SlimDXTest
         protected virtual void Draw() { }
         protected virtual void LoadContent() { }
         protected virtual void UnloadContent() { }
+
+        private void InitializeComponent()
+        {
+            this.SuspendLayout();
+            // 
+            // Core
+            // 
+            this.ClientSize = new System.Drawing.Size(521, 463);
+            this.Name = "Core";
+            this.Text = "Test";
+            this.ResumeLayout(false);
+
+        }
     }
 }

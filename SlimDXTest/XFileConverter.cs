@@ -41,6 +41,7 @@ namespace SlimDXTest
             {
                 s = Regex.Replace(s, "Material ", "");  // マッチさせる前に邪魔なのは消す 
                 Match m = Regex.Match(s, "\\w+");
+                Console.WriteLine("Converter: Material.Add:" + m.Value);
                 matList.AddMaterial(sr, m.Value);
             }
             else if (Regex.IsMatch(s, @"^\s*Mesh "))
