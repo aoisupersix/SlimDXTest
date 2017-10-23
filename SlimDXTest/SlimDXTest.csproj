@@ -69,12 +69,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Model.cs" />
     <Compile Include="View.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="XFileConverter.cs" />
-    <Compile Include="XFIleFormat.cs" />
-    <Compile Include="XLoader.cs" />
+    <Compile Include="XConverter\XFileConverter.cs" />
+    <Compile Include="XConverter\XFIleFormat.cs" />
     <Content Include="MyEffect.fx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
