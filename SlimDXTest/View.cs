@@ -14,12 +14,17 @@ namespace SlimDXTest
         List<Model> models = new List<Model>();
 
         Vector3 moving = new Vector3(0,0,0);
+        float zooming = 0;
 
         /// <summary>
         /// マウス入力の受け取り
         /// </summary>
         protected override void MouseInput(object sender, MouseInputEventArgs e)
         {
+            if (e.WheelDelta > 0)
+                zooming += 0.1f;
+            else if (e.WheelDelta < 0)
+                zooming -= 0.1f;
         }
 
         /// <summary>
@@ -91,8 +96,13 @@ namespace SlimDXTest
                 )
             );
 
+            if (zooming < 0)
+                zooming = 0;
+            else if (zooming > 3)
+                zooming = 3;
+
             var projection = Matrix.PerspectiveFovRH(
-                30 * (float)Math.PI / 180, ClientSize.Width / ClientSize.Height, 0.1f, 1000
+                30 * ((float)Math.PI - zooming) / 180, (ClientSize.Width - zooming) / ClientSize.Height, 0.1f, 1000
             );
 
             effect.GetVariableByName("World").AsMatrix().SetMatrix(world);
