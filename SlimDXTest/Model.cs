@@ -94,7 +94,7 @@ namespace SlimDXTest
                 string refName = Cnv.meshSection.matList.materialReferens[matNum];
 
                 Material m = GetMaterialFromReference(refName);
-                Console.WriteLine("mat:" + matNum + "-> ref:" + refName + ",matName:" + m.Name);
+                //Console.WriteLine("mat:" + matNum + "-> ref:" + refName + ",matName:" + m.Name);
 
                 //テクスチャを利用しているかどうか
                 if (!m.TextureFileName.Equals(""))
@@ -249,10 +249,10 @@ namespace SlimDXTest
 
         public void Unload()
         {
-            foreach (var t in textureManager.GetAllTextures()) t?.Dispose();
             vertexLayout.Dispose();
             vertexBuffer.Dispose();
             indexBuffer.Dispose();
+            textureManager.Dispose();
         }
     }
 
@@ -288,6 +288,14 @@ namespace SlimDXTest
         {
             textures.Add(tex);
             texIndex.Add(matName, textures.Count - 1);
+        }
+
+        public void Dispose()
+        {
+            foreach(Dx11.ShaderResourceView texture in textures)
+            {
+                texture.Dispose();
+            }
         }
     }
 

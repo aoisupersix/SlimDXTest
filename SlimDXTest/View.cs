@@ -4,6 +4,7 @@ using SlimDX;
 using Dx11 = SlimDX.Direct3D11;
 using Dxgi = SlimDX.DXGI;
 using D3DComp = SlimDX.D3DCompiler;
+using SlimDX.RawInput;
 
 namespace SlimDXTest
 {
@@ -11,6 +12,37 @@ namespace SlimDXTest
     {
         Dx11.Effect effect;
         List<Model> models = new List<Model>();
+
+        Vector3 moving = new Vector3(0,0,0);
+
+        /// <summary>
+        /// マウス入力の受け取り
+        /// </summary>
+        protected override void MouseInput(object sender, MouseInputEventArgs e)
+        {
+        }
+
+        /// <summary>
+        /// キーボード入力の受け取り
+        /// </summary>
+        protected override void KeyInput(object sender, KeyboardInputEventArgs e)
+        {
+            //距離移動
+            if(e.Key == System.Windows.Forms.Keys.Up)
+                moving.Z += 1f;
+            if(e.Key == System.Windows.Forms.Keys.Down)
+                moving.Z -= 1f;
+
+            //上下左右移動
+            if (e.Key == System.Windows.Forms.Keys.W)
+                moving.Y -= 1f;
+            if (e.Key == System.Windows.Forms.Keys.S)
+                moving.Y += 1f;
+            if (e.Key == System.Windows.Forms.Keys.D)
+                moving.X -= 1f;
+            if (e.Key == System.Windows.Forms.Keys.A)
+                moving.X += 1f;
+        }
 
         /// <summary>
         /// 描画処理
@@ -32,15 +64,11 @@ namespace SlimDXTest
 
             UpdateCamera();
 
-            //foreach(Model model in models)
-            //{
-            //    model.InitModelInputAssembler(GraphicsDevice);
-            //    model.DrawModel(GraphicsDevice, effect);
-
-            //}
-            models[0].InitModelInputAssembler(GraphicsDevice);
-            models[0].DrawModel(GraphicsDevice, effect);
-
+            foreach (Model model in models)
+            {
+                model.InitModelInputAssembler(GraphicsDevice);
+                model.DrawModel(GraphicsDevice, effect);
+            }
             SwapChain.Present(0, Dxgi.PresentFlags.None);
         }
 
@@ -49,20 +77,22 @@ namespace SlimDXTest
         /// </summary>
         private void UpdateCamera()
         {
-            double time = System.Environment.TickCount / 1000d;
+            var world = Matrix.Identity;
 
-            Matrix world = Matrix.LookAtRH(
-                new Vector3((float)System.Math.Cos(time), 0, (float)System.Math.Sin(time)),
-                new Vector3(),
-                new Vector3(0, 1, 0)
-                );
-
-            var view = Matrix.LookAtRH(
-                new Vector3(0, 10, -10), new Vector3(0, 5, 0), new Vector3(0, 1, 0)
+            var viewEye = new Vector3(0, 5, 45);
+            var viewTarget = new Vector3(0, 5, 0);
+            var view = Matrix.Multiply(
+                Matrix.Multiply(
+                    Matrix.RotationX(0),
+                    Matrix.RotationY(0)
+                ), Matrix.Multiply(
+                    Matrix.LookAtRH(viewEye, viewTarget, new Vector3(0, 1, 0)),
+                    Matrix.Translation(moving.X, moving.Y, moving.Z * 5.5f)
+                )
             );
 
             var projection = Matrix.PerspectiveFovRH(
-                (float)Math.PI / 2, ClientSize.Width / ClientSize.Height, 0.1f, 1000
+                30 * (float)Math.PI / 180, ClientSize.Width / ClientSize.Height, 0.1f, 1000
             );
 
             effect.GetVariableByName("World").AsMatrix().SetMatrix(world);
@@ -80,7 +110,9 @@ namespace SlimDXTest
         {
             //テスト
             models.Add(new Model("./244End.x"));
-            foreach(Model model in models)
+            models.Add(new Model("./Bill1.x"));
+
+            foreach (Model model in models)
             {
                 model.Init(GraphicsDevice, effect);
             }

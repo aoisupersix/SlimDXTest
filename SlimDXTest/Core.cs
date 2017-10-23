@@ -3,6 +3,8 @@ using SlimDX.Windows;
 using System.Windows.Forms;
 using Dx11 = SlimDX.Direct3D11;
 using Dxgi = SlimDX.DXGI;
+using SlimDX.Multimedia;
+using Rwin = SlimDX.RawInput;
 
 namespace SlimDXTest
 {
@@ -12,6 +14,24 @@ namespace SlimDXTest
         public Dxgi.SwapChain SwapChain;
         public Dx11.RenderTargetView RenderTarget;
         public Dx11.DepthStencilView DepthStencil;
+
+        public Label PositionLabel;
+
+        public Core()
+        {
+            InitForm();
+        }
+
+        private void InitForm()
+        {
+            ClientSize = new System.Drawing.Size(800, 600);
+            Text = "SlimDXTest";
+            PositionLabel = new Label();
+            PositionLabel.Text = "Position:";
+            PositionLabel.Location = new System.Drawing.Point(10,10);
+            PositionLabel.Size = new System.Drawing.Size(80, 15);
+            Controls.Add(PositionLabel);
+        }
 
         public void Run()
         {
@@ -31,6 +51,7 @@ namespace SlimDXTest
             InitDepthStencil();
             GraphicsDevice.ImmediateContext.OutputMerger.SetTargets(DepthStencil, RenderTarget);
             InitViewport();
+            InitInputDevice();
 
             LoadContent();
         }
@@ -89,6 +110,14 @@ namespace SlimDXTest
                 );
         }
 
+        private void InitInputDevice()
+        {
+            Rwin.Device.RegisterDevice(UsagePage.Generic, UsageId.Mouse, Rwin.DeviceFlags.None);
+            Rwin.Device.MouseInput += MouseInput;
+            Rwin.Device.RegisterDevice(UsagePage.Generic, UsageId.Keyboard, Rwin.DeviceFlags.None);
+            Rwin.Device.KeyboardInput += KeyInput;
+        }
+
         private void DisposeDevice()
         {
             UnloadContent();
@@ -101,18 +130,8 @@ namespace SlimDXTest
         protected virtual void Draw() { }
         protected virtual void LoadContent() { }
         protected virtual void UnloadContent() { }
+        protected virtual void MouseInput(object sender, Rwin.MouseInputEventArgs e) { }
+        protected virtual void KeyInput(object sender, Rwin.KeyboardInputEventArgs e) { }
 
-        private void InitializeComponent()
-        {
-            this.SuspendLayout();
-            // 
-            // Core
-            // 
-            this.ClientSize = new System.Drawing.Size(521, 463);
-            this.Name = "Core";
-            this.Text = "Test";
-            this.ResumeLayout(false);
-
-        }
     }
 }
