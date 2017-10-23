@@ -110,6 +110,7 @@ namespace SlimDXTest
         {
             //テスト
             models.Add(new Model("./244End.x"));
+            models[0].Position = new Vector3(10, 0, 0);
             models.Add(new Model("./Bill1.x"));
 
             foreach (Model model in models)

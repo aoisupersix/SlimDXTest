@@ -25,11 +25,15 @@ namespace SlimDXTest
         List<uint> indices = new List<uint>();
         TextureManager textureManager = new TextureManager();
 
+        public Vector3 Position { get; set; }
+
         public Model(string filePath)
         {
             this.OldPath = filePath;
             Cnv = new XFileConverter(this.OldPath, CreateNewPath(filePath));
             this.FilePath = Cnv.Import();
+
+            Position = new Vector3(0, 0, 0);
         }
 
         /// <summary>
@@ -158,6 +162,8 @@ namespace SlimDXTest
             {
                 Vector3 vtxPos = Cnv.meshSection.vtxList.vertex[i];
                 Vector2 uvPos = Cnv.meshSection.uvList.uvs[i];
+
+                vtxPos += Position;
 
                 Console.WriteLine("Model:" + OldPath + " -> InitVertexBuffer");
                 Console.WriteLine("AddVertex [" + i + "] : x:" + vtxPos.X + ",y:" + vtxPos.Y + ",z:" + vtxPos.Z);
