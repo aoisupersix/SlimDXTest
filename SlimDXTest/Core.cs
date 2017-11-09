@@ -14,24 +14,10 @@ namespace SlimDXTest
         public Dxgi.SwapChain SwapChain;
         public Dx11.RenderTargetView RenderTarget;
         public Dx11.DepthStencilView DepthStencil;
-
+        private Panel ViewPanel;
+        private MenuStrip menuStrip1;
+        private ToolStripMenuItem ファイルFToolStripMenuItem;
         public Label PositionLabel;
-
-        public Core()
-        {
-            InitForm();
-        }
-
-        private void InitForm()
-        {
-            ClientSize = new System.Drawing.Size(800, 600);
-            Text = "SlimDXTest";
-            PositionLabel = new Label();
-            PositionLabel.Text = "Position:";
-            PositionLabel.Location = new System.Drawing.Point(10,10);
-            PositionLabel.Size = new System.Drawing.Size(80, 15);
-            Controls.Add(PositionLabel);
-        }
 
         public void Run()
         {
@@ -43,9 +29,11 @@ namespace SlimDXTest
         /// <summary>
         /// 初期化
         /// </summary>
-        private void InitDevice()
+        protected virtual void InitDevice()
         {
-            MyDirectXHelper.CreateDeviceAndSwapChain(this, out GraphicsDevice, out SwapChain);
+            InitializeComponent();
+            MyDirectXHelper.CreateDeviceAndSwapChain(this, ViewPanel, out GraphicsDevice, out SwapChain);
+
             InitRasterizerState();
             InitRenderTarget();
             InitDepthStencil();
@@ -133,5 +121,52 @@ namespace SlimDXTest
         protected virtual void MouseInput(object sender, Rwin.MouseInputEventArgs e) { }
         protected virtual void KeyInput(object sender, Rwin.KeyboardInputEventArgs e) { }
 
+        private void InitializeComponent()
+        {
+            this.ViewPanel = new System.Windows.Forms.Panel();
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.ファイルFToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ViewPanel.SuspendLayout();
+            this.menuStrip1.SuspendLayout();
+            this.SuspendLayout();
+            // 
+            // ViewPanel
+            // 
+            this.ViewPanel.Controls.Add(this.menuStrip1);
+            this.ViewPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.ViewPanel.Location = new System.Drawing.Point(0, 0);
+            this.ViewPanel.Name = "ViewPanel";
+            this.ViewPanel.Size = new System.Drawing.Size(800, 600);
+            this.ViewPanel.TabIndex = 0;
+            // 
+            // menuStrip1
+            // 
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.ファイルFToolStripMenuItem});
+            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Size = new System.Drawing.Size(800, 24);
+            this.menuStrip1.TabIndex = 0;
+            this.menuStrip1.Text = "menuStrip1";
+            // 
+            // ファイルFToolStripMenuItem
+            // 
+            this.ファイルFToolStripMenuItem.Name = "ファイルFToolStripMenuItem";
+            this.ファイルFToolStripMenuItem.Size = new System.Drawing.Size(67, 20);
+            this.ファイルFToolStripMenuItem.Text = "ファイル(&F)";
+            // 
+            // Core
+            // 
+            this.ClientSize = new System.Drawing.Size(800, 600);
+            this.Controls.Add(this.ViewPanel);
+            this.MainMenuStrip = this.menuStrip1;
+            this.Name = "Core";
+            this.ViewPanel.ResumeLayout(false);
+            this.ViewPanel.PerformLayout();
+            this.menuStrip1.ResumeLayout(false);
+            this.menuStrip1.PerformLayout();
+            this.ResumeLayout(false);
+
+        }
     }
 }

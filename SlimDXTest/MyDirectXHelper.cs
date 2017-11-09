@@ -12,6 +12,7 @@ namespace SlimDXTest
         //デバイスとスワップチェーンの初期化
         public static void CreateDeviceAndSwapChain(
             System.Windows.Forms.Form form,
+            System.Windows.Forms.Panel panel,
             out SlimDX.Direct3D11.Device device,
             out SwapChain swapChain
             )
@@ -22,7 +23,7 @@ namespace SlimDXTest
                 new SwapChainDescription
                 {
                     BufferCount = 1,
-                    OutputHandle = form.Handle,
+                    OutputHandle = panel.Handle,
                     IsWindowed = true,
                     SampleDescription = new SampleDescription
                     {

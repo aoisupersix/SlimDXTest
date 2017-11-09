@@ -149,5 +149,21 @@ namespace SlimDXTest
                 model.Unload();
             }
         }
+
+        private void InitializeComponent()
+        {
+            this.SuspendLayout();
+            // 
+            // PositionLabel
+            // 
+            this.PositionLabel.Location = new System.Drawing.Point(258, 220);
+            // 
+            // View
+            // 
+            this.ClientSize = new System.Drawing.Size(800, 600);
+            this.Name = "View";
+            this.ResumeLayout(false);
+
+        }
     }
 }
